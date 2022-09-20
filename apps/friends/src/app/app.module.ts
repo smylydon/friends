@@ -7,16 +7,18 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RoutingModule } from './app.routing';
 
 const metaReducers: any[] = [];
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    RoutingModule,
     StoreModule.forRoot(
       {},
       {
