@@ -36,10 +36,13 @@ export const loadFriendsSuccess = createAction(
 
 export const loadFriendsFailure = createAction(
   FriendsActionTypes.LOAD_FRIENDS_SUCCESS_FAILURE,
-  props<{ error: any }>()
+  props<{ error: Error }>()
 );
 
-export const saveFriends = createAction(FriendsActionTypes.SAVE_FRIENDS);
+export const saveFriends = createAction(
+  FriendsActionTypes.SAVE_FRIENDS,
+  props<{ friends: FriendsEntity[] }>()
+);
 
 export const saveFriendsSuccess = createAction(
   FriendsActionTypes.SAVE_FRIENDS_SUCCESS,
@@ -48,5 +51,5 @@ export const saveFriendsSuccess = createAction(
 
 export const saveFriendsFailure = createAction(
   FriendsActionTypes.SAVE_FRIENDS_SUCCESS_FAILURE,
-  props<{ error: any }>()
+  props<{ error: Error }>()
 );

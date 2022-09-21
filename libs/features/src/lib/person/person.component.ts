@@ -5,6 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { addFriend } from '../+state/friends.actions';
+import { FriendsEntity } from '../+state/friends.models';
 
 @Component({
   selector: 'friends-person',
@@ -31,7 +34,7 @@ export class PersonComponent implements OnInit {
   public maxDate = new Date(1990, 0, 1);
   public minDate = new Date(1990, 0, 1);
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
     const date = new Date();
@@ -56,6 +59,11 @@ export class PersonComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.personForm.value);
+    const friend: FriendsEntity = Object.assign(
+      {},
+      this.personForm.value
+    ) as FriendsEntity;
+    console.log(friend);
+    this.store.dispatch(addFriend({ friend }));
   }
 }

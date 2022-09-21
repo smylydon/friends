@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { FriendsEntity } from '../+state/friends.models';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 
 const DELAY_TIME = 500;
 
@@ -18,16 +18,19 @@ export class FriendsService {
   public readonly AUTOSAVE_INTERVAL = 10 * 60 * 1000; // 10 minutes
   constructor() {}
 
-  private loadFriends(): Observable<FriendsEntity[]> {
-    let items = JSON.parse(localStorage.getItem('friends-list') || '');
+  public loadFriends(): Observable<FriendsEntity[]> {
+    const data = localStorage.getItem('friends-list');
+    let items = JSON.parse(data || '[]');
     if (!Array.isArray(items)) {
       items = [];
     }
+    console.log('loaded friends...', items);
     return of(items as FriendsEntity[]).pipe(delay(DELAY_TIME));
   }
 
-  private saveFriends(items: FriendsEntity[]) {
+  public saveFriends(items: FriendsEntity[]): Observable<boolean> {
     return of(localStorage.setItem('friends-list', JSON.stringify(items))).pipe(
+      map(() => true),
       delay(DELAY_TIME)
     );
   }

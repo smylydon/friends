@@ -1,5 +1,6 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
+import { UUID } from 'angular2-uuid';
 
 import * as FriendsActions from './friends.actions';
 import { FriendsEntity } from './friends.models';
@@ -9,7 +10,7 @@ export const FRIENDS_FEATURE_KEY = 'friends';
 export interface FriendsState extends EntityState<FriendsEntity> {
   selectedId?: string | number; // which Friends record has been selected
   loaded: boolean; // has the Friends list been loaded
-  error?: string | null; // last known error (if any)
+  error?: Error | null; // last known error (if any)
 }
 
 export interface FriendsPartialState {
@@ -39,7 +40,14 @@ const reducer = createReducer(
   on(FriendsActions.loadFriendsFailure, (state, { error }) => ({
     ...state,
     error,
-  }))
+  })),
+  on(FriendsActions.addFriend, (state, { friend }) => {
+    const id = UUID.UUID();
+    return friendsAdapter.upsertOne(
+      { ...friend, id },
+      { ...state, loaded: true }
+    );
+  })
 );
 
 export function friendsReducer(
