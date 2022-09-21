@@ -27,10 +27,27 @@ export class PersonComponent implements OnInit {
     Validators.max(2000),
   ]);
   public units: FormControl = new FormControl('', [Validators.required]);
+  public startDate = new Date(1990, 0, 1);
+  public maxDate = new Date(1990, 0, 1);
+  public minDate = new Date(1990, 0, 1);
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+    const date = new Date();
+    const maxDate = new Date(
+      date.getFullYear() - 18,
+      date.getMonth(),
+      date.getDay()
+    );
+    this.minDate = new Date(
+      maxDate.getFullYear() - 110, //arbitrary, guessing no one is 128 years old
+      maxDate.getMonth(),
+      maxDate.getDay()
+    );
+    this.startDate = maxDate;
+    this.maxDate = maxDate;
+
     this.personForm = this.formBuilder.group({
       name: this.name,
       dob: this.dob,

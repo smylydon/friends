@@ -24,13 +24,23 @@
     <input
       matInput
       [matDatepicker]="picker"
+      [min]="minDate"
+      [max]="maxDate"
       name="dob"
       formControlName="dob"
-      dob
+      [disabled]="true"
     />
     <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="picker"
+      [disabled]="false"
+    ></mat-datepicker-toggle>
+    <mat-datepicker
+      #picker
+      [startAt]="startDate"
+      [disabled]="false"
+    ></mat-datepicker>
   </mat-form-field>
 
   <button mat-button color="primary" [disabled]="personForm.invalid">
