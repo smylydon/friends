@@ -1,11 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, NxWelcomeComponent],
+      declarations: [AppComponent],
+      imports: [
+        RouterTestingModule.withRoutes([
+          {
+            path: '',
+            component: NotFoundComponent,
+          },
+        ]),
+      ],
     }).compileComponents();
   });
 
@@ -21,12 +30,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('friends');
   });
 
-  it('should render title', () => {
+  it('should have a router-outlet', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome friends'
-    );
+    expect(compiled.querySelector('router-outlet')).not.toBe(null);
   });
 });
