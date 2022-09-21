@@ -13,6 +13,8 @@ import { PersonComponent } from './person/person.component';
 import { PeopleComponent } from './people/people.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { LayoutComponent } from './layout/layout.component';
+import { TotalFriendsPipe } from './pipes/total-friends.pipe';
+import { TimeSincePipe } from './pipes/time-since.pipe';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import { LayoutComponent } from './layout/layout.component';
     PeopleComponent,
     StatisticsComponent,
     LayoutComponent,
+    TotalFriendsPipe,
+    TimeSincePipe,
   ],
 })
 export class FeaturesModule {}
