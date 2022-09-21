@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from './material.module';
 
-import { PeopleComponent } from './people/people.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromFriends from './+state/friends.reducer';
 import { FriendsEffects } from './+state/friends.effects';
 import { FeaturesRoutingModule } from './features.routing.module';
 
+import { PersonComponent } from './person/person.component';
+import { PeopleComponent } from './people/people.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { LayoutComponent } from './layout/layout.component';
+
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
     FeaturesRoutingModule,
     StoreModule.forFeature(
       fromFriends.FRIENDS_FEATURE_KEY,
@@ -19,6 +27,12 @@ import { FeaturesRoutingModule } from './features.routing.module';
     ),
     EffectsModule.forFeature([FriendsEffects]),
   ],
-  declarations: [PeopleComponent, StatisticsComponent],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule],
+  declarations: [
+    PersonComponent,
+    PeopleComponent,
+    StatisticsComponent,
+    LayoutComponent,
+  ],
 })
 export class FeaturesModule {}

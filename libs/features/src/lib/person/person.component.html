@@ -1,1 +1,39 @@
-<p>person works!</p>
+<form class="form" [formGroup]="personForm" (ngSubmit)="submit()">
+  <mat-form-field class="w-100" appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+    <mat-error *ngIf="personForm.controls['name'].hasError('minlength')"
+      >Name of at least 5 characters is required</mat-error
+    >
+    <mat-error *ngIf="personForm.controls['name'].hasError('maxlength')"
+      >You have more than 100 characters</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field class="w-100" appearance="fill">
+    <mat-label>Weight</mat-label>
+    <span>
+      <input matInput name="weight" formControlName="weight" />
+      <mat-radio-group aria-label="Select an option">
+        <mat-radio-button value="1">lbs </mat-radio-button>
+        <mat-radio-button value="2">kgs</mat-radio-button>
+      </mat-radio-group>
+    </span>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Date of Birth</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      name="dob"
+      formControlName="dob"
+      dob
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-button color="primary" [disabled]="personForm.invalid">
+    Submit
+  </button>
+</form>
