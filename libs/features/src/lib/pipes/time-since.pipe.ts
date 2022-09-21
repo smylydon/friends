@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 
 /**
  * Tell the duration since a given time
+ * https://stackoverflow.com/questions/43260868/angular2-how-to-transform-year-to-age-using-pipe
  */
 @Pipe({
   name: 'timeSince',

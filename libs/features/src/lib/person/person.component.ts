@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,6 +13,7 @@ import { FriendsEntity } from '../+state/friends.models';
   selector: 'friends-person',
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PersonComponent implements OnInit {
   public selected: Date | null = null;

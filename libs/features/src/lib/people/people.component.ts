@@ -1,5 +1,7 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   OnDestroy,
   OnInit,
@@ -7,8 +9,9 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subscriber, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FriendsEntity } from '../+state/friends.models';
 import { FriendsState } from '../+state/friends.reducer';
 import { getAllFriends } from '../+state/friends.selectors';
@@ -18,9 +21,11 @@ import { getAllFriends } from '../+state/friends.selectors';
   selector: 'friends-people',
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PeopleComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   public displayedColumns: string[] = ['name', 'dob', 'weight', 'friends'];
 
@@ -31,13 +36,17 @@ export class PeopleComponent implements OnInit, OnDestroy, AfterViewInit {
     FriendsEntity[]
   >([]);
 
-  constructor(private store: Store<FriendsState>) {}
+  constructor(
+    private store: Store<FriendsState>,
+    private _liveAnnouncer: LiveAnnouncer
+  ) {}
 
   ngOnInit(): void {
     this.peopleData$ = this.store.select(getAllFriends);
   }
 
   ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.subscription.add(
       this.peopleData$.subscribe((friends: FriendsEntity[]) => {
@@ -49,5 +58,18 @@ export class PeopleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

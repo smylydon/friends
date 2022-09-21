@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { interval, Observable, pipe, Subscription } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
@@ -12,6 +17,7 @@ import { FriendsState } from '../+state/friends.reducer';
   selector: 'friends-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
