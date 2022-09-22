@@ -72,4 +72,8 @@ export class PeopleComponent implements OnInit, OnDestroy, AfterViewInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+
+  selectPerson(id: string | number | null | undefined) {
+    console.log('selected:::', id);
+  }
 }

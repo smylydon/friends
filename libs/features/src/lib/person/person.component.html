@@ -11,13 +11,16 @@
   </mat-form-field>
   <mat-form-field class="w-100" appearance="fill">
     <mat-label>Weight</mat-label>
+    <input matInput name="weight" formControlName="weight" />
+    <!-- 
+
     <span>
-      <input matInput name="weight" formControlName="weight" />
       <mat-radio-group aria-label="Select an option">
         <mat-radio-button value="1">lbs </mat-radio-button>
         <mat-radio-button value="2">kgs</mat-radio-button>
       </mat-radio-group>
     </span>
+    -->
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Date of Birth</mat-label>
@@ -42,7 +45,7 @@
     ></mat-datepicker>
   </mat-form-field>
 
-  <button mat-button color="primary" [disabled]="personForm.invalid">
+  <button mat-raised-button color="primary" [disabled]="personForm.invalid">
     Submit
   </button>
 </form>

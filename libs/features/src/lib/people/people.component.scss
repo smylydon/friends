@@ -1,9 +1,41 @@
-div {
-  min-width: 150px;
-  max-width: 600px;
+img {
+  border: 1px solid #ccc;
+  border-radius: 0;
+}
+
+.row {
+  max-height: 100%;
+}
+
+.list {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 64px);
+  background-color: green;
+}
+
+mat-list-item {
+  margin-bottom: 3px;
+  border: 1px solid #ccc;
+}
+
+.table-container {
   width: 100%;
+  max-width: 40rem;
   margin: auto;
-  & table {
-    min-width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+  & :first-of-type {
+    width: 20%;
   }
+}
+
+td {
+  min-width: 3rem;
 }
