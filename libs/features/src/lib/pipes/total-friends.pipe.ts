@@ -5,9 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TotalFriendsPipe implements PipeTransform {
   transform(value: unknown, ...args: unknown[]): unknown {
+    let length = 0;
     if (Array.isArray(value)) {
-      return value.length;
+      length = value.length;
     }
-    return '-';
+    return length === 0 ? '-' : length;
   }
 }

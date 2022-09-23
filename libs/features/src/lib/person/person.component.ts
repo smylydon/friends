@@ -65,11 +65,11 @@ export class PersonComponent implements OnInit {
   }
 
   submit() {
-    const friend: FriendsEntity = Object.assign(
-      {},
-      this.personForm.value
-    ) as FriendsEntity;
-    console.log(friend);
+    const friend: FriendsEntity = Object.assign({}, this.personForm.value, {
+      dob: new Date(this.personForm.value.dob).toISOString(),
+    }) as FriendsEntity;
+
     this.store.dispatch(addFriend({ friend }));
+    this.personForm.reset('', { emitEvent: false });
   }
 }

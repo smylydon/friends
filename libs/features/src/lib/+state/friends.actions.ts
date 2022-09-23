@@ -2,13 +2,14 @@ import { createAction, props } from '@ngrx/store';
 import { FriendsEntity } from './friends.models';
 
 export enum FriendsActionTypes {
-  INIT = '[Friends Page] Init',
+  INIT = '[Friends/API] Init',
   ADD_FRIEND = '[Friends/API] Add Friends Success',
   DELETE_FRIEND = '[Friends/API] Delete Friends Success',
-  LOAD_FRIENDS = '[Friends Page] Loan Friends',
+  ADD_FRIENDS_LIST = '[Friends/API] Add Friends List Success',
+  LOAD_FRIENDS = '[Friends/API] Load Friends',
   LOAD_FRIENDS_SUCCESS = '[Friends/API] Load Friends Success',
   LOAD_FRIENDS_SUCCESS_FAILURE = '[Friends/API] Load Friends Failure',
-  SAVE_FRIENDS = '[Friends Page] Save Friends',
+  SAVE_FRIENDS = '[Friends/API] Save Friends',
   SAVE_FRIENDS_SUCCESS = '[Friends/API] Save Friends Success',
   SAVE_FRIENDS_SUCCESS_FAILURE = '[Friends/API] Save Friends Failure',
 }
@@ -26,7 +27,7 @@ export const deleteFriend = createAction(
 );
 
 export const addFriendList = createAction(
-  FriendsActionTypes.ADD_FRIEND,
+  FriendsActionTypes.ADD_FRIENDS_LIST,
   props<{ friend: FriendsEntity }>()
 );
 
