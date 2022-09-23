@@ -47,7 +47,12 @@ const reducer = createReducer(
       { ...friend, id },
       { ...state, loaded: true }
     );
-  })
+  }),
+  on(FriendsActions.saveFriends, (state) => ({
+    ...state,
+    loaded: false,
+    error: null,
+  }))
 );
 
 export function friendsReducer(

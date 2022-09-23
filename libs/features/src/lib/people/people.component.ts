@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -24,6 +25,7 @@ import { getAllFriends } from '../+state/friends.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PeopleComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() isloading = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

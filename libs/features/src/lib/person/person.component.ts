@@ -8,6 +8,7 @@ import {
 import { Store } from '@ngrx/store';
 import { addFriend } from '../+state/friends.actions';
 import { FriendsEntity } from '../+state/friends.models';
+import { HelperService } from '../services/helper.service';
 
 @Component({
   selector: 'friends-person',
@@ -21,7 +22,7 @@ export class PersonComponent implements OnInit {
 
   public name: FormControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(5),
+    Validators.minLength(3),
     Validators.maxLength(100),
   ]);
   public dob: FormControl = new FormControl('', [Validators.required]);
@@ -35,7 +36,11 @@ export class PersonComponent implements OnInit {
   public maxDate = new Date(1990, 0, 1);
   public minDate = new Date(1990, 0, 1);
 
-  constructor(private formBuilder: FormBuilder, private store: Store) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<FriendsEntity[]>,
+    public helperService: HelperService
+  ) {}
 
   ngOnInit(): void {
     const date = new Date();

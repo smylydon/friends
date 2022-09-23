@@ -4,7 +4,7 @@ import { FriendsEntity } from '../+state/friends.models';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
-const DELAY_TIME = 500;
+const DELAY_TIME = 1000 * 2; // a mock loading and saving delay
 
 /*
  * To save time I borrowed and adapted this service from an old project.

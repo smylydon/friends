@@ -41,4 +41,10 @@ $theme: mat.define-light-theme(
   & main {
     overflow: hidden;
   }
+
+  & button {
+    margin-left: auto;
+    margin-right: 0.5rem;
+    min-width: 8rem;
+  }
 }

@@ -29,6 +29,24 @@ export class FriendsEffects {
     )
   );
 
+  load$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FriendsActions.loadFriends),
+      mergeMap(() => {
+        return this.friendsService.loadFriends().pipe(
+          map((response: FriendsEntity[]) => {
+            return FriendsActions.loadFriendsSuccess({
+              friends: response,
+            });
+          }),
+          catchError((error: Error) => {
+            return of(FriendsActions.loadFriendsFailure({ error }));
+          })
+        );
+      })
+    )
+  );
+
   save$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FriendsActions.saveFriends),

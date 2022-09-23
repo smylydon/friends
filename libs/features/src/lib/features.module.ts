@@ -15,6 +15,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { LayoutComponent } from './layout/layout.component';
 import { TotalFriendsPipe } from './pipes/total-friends.pipe';
 import { TimeSincePipe } from './pipes/time-since.pipe';
+import { FriendsService } from './services/friends.service';
+import { HelperService } from './services/helper.service';
 
 @NgModule({
   imports: [
@@ -38,5 +40,6 @@ import { TimeSincePipe } from './pipes/time-since.pipe';
     TotalFriendsPipe,
     TimeSincePipe,
   ],
+  providers: [FriendsService, HelperService],
 })
 export class FeaturesModule {}

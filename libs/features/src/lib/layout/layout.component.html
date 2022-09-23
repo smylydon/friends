@@ -9,6 +9,13 @@
           <a mat-button [routerLink]="'/connect-friends'"> Connect Friends </a>
           <a mat-button [routerLink]="'/statistics'"> Statistics </a>
         </div>
+        <button
+          mat-stroked-button
+          (click)="save()"
+          [disabled]="helperService.isloading$ | async"
+        >
+          Save
+        </button>
       </mat-toolbar-row>
     </mat-toolbar>
   </div>
