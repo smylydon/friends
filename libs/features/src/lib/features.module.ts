@@ -17,6 +17,7 @@ import { TotalFriendsPipe } from './pipes/total-friends.pipe';
 import { TimeSincePipe } from './pipes/time-since.pipe';
 import { FriendsService } from './services/friends.service';
 import { HelperService } from './services/helper.service';
+import { PeopleTableComponent } from './people-table/people-table.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { HelperService } from './services/helper.service';
     LayoutComponent,
     TotalFriendsPipe,
     TimeSincePipe,
+    PeopleTableComponent,
   ],
   providers: [FriendsService, HelperService],
 })

@@ -1,6 +1,7 @@
 img {
   border: 1px solid #ccc;
   border-radius: 0;
+  margin-right: 2px;
 }
 
 .row {
@@ -11,7 +12,6 @@ img {
   overflow-x: hidden;
   overflow-y: auto;
   max-height: calc(100vh - 64px);
-  background-color: green;
 }
 
 mat-list-item {
@@ -19,23 +19,6 @@ mat-list-item {
   border: 1px solid #ccc;
 }
 
-.table-container {
-  width: 100%;
-  max-width: 40rem;
-  margin: auto;
-}
-
-table {
-  width: 100%;
-}
-
-th.mat-sort-header-sorted {
-  color: black;
-  & :first-of-type {
-    width: 20%;
-  }
-}
-
-td {
-  min-width: 3rem;
+.selected {
+  background-color: #ccc;
 }
