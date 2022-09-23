@@ -7,6 +7,7 @@ import {
 
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { addFriendList } from '../+state/friends.actions';
 import { FriendsEntity } from '../+state/friends.models';
 import { FriendsState } from '../+state/friends.reducer';
 import { getAllFriends } from '../+state/friends.selectors';
@@ -34,5 +35,9 @@ export class PeopleComponent implements OnInit {
   selectPerson(id: string | number | null | undefined) {
     this.selectedPersonId = id;
     console.log('selected:::', id);
+  }
+
+  updateFriend(friend: FriendsEntity) {
+    this.store.dispatch(addFriendList({ friend }));
   }
 }

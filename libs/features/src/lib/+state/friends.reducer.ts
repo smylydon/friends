@@ -52,7 +52,14 @@ const reducer = createReducer(
     ...state,
     loaded: false,
     error: null,
-  }))
+  })),
+  on(FriendsActions.addFriendList, (state, { friend }) => {
+    const id = friend.id;
+    return friendsAdapter.upsertOne(
+      { ...friend, id },
+      { ...state, loaded: true }
+    );
+  })
 );
 
 export function friendsReducer(

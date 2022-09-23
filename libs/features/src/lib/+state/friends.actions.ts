@@ -25,6 +25,11 @@ export const deleteFriend = createAction(
   props<{ friends: FriendsEntity }>()
 );
 
+export const addFriendList = createAction(
+  FriendsActionTypes.ADD_FRIEND,
+  props<{ friend: FriendsEntity }>()
+);
+
 // INIT and LOAD_FRIENDS do the same thing but IRL they would differ
 // reason being INIT would probably do other house keeping stuff.
 export const loadFriends = createAction(FriendsActionTypes.LOAD_FRIENDS);

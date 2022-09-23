@@ -16,6 +16,7 @@
     <friends-people-table
       [data]="peopleData$ | async"
       [selectedPersonId]="selectedPersonId"
+      (friendsList)="updateFriend($event)"
     ></friends-people-table>
   </div>
 </div>

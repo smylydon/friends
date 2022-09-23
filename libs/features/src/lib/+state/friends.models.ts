@@ -4,7 +4,7 @@
 export interface FriendsEntity {
   id?: string | number; // Primary ID
   name: string;
-  friends?: FriendsEntity[];
+  friends?: string[];
   weight: number;
   dob: string;
 }
