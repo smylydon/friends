@@ -1,11 +1,9 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
+import { FriendsEntity } from '../+state/friends.models';
+import { SimpleDataModel } from '../models/simple-data.model';
+import { TimeSincePipe } from '../pipes/time-since.pipe';
 
-export interface SimpleDataModel {
-  name: string;
-  value: string;
-  color?: string;
-}
 //https://stackblitz.com/edit/angular-d3-js-donut-chart?file=src%2Fapp%2Fd3-donut%2Fd3-donut.component.ts
 @Component({
   selector: 'friends-age-donut',
@@ -13,34 +11,90 @@ export interface SimpleDataModel {
   styleUrls: ['./age-donut.component.scss'],
 })
 export class AgeDonutComponent implements AfterViewInit {
-  @Input('data') private data: SimpleDataModel[] = [
-    { name: 'a', value: '9', color: '#665faac' },
-    { name: 'b', value: '20', color: '#dd8050c4' },
-    { name: 'c', value: '30', color: '#63adfeb3' },
-    { name: 'd', value: '8', color: '#24b044d9' },
-    { name: 'e', value: '12', color: '#ff516ed9' },
-    { name: 'f', value: '3', color: '#ffcf59ed' },
-    { name: 'g', value: '7', color: '#17a2b8' },
-    { name: 'h', value: '14', color: '#976a6af2' },
+  @Input('data') set setData(friends: FriendsEntity[] | null | undefined) {
+    const templateData: SimpleDataModel[] = this.dataTemplate.map(
+      (data: SimpleDataModel) => {
+        return Object.assign({}, data);
+      }
+    );
+    const updateData = (collection: SimpleDataModel[], target: string) => {
+      const data: SimpleDataModel | undefined = collection.find(
+        (item: SimpleDataModel) => {
+          return item.name === target;
+        }
+      );
+      if (data) {
+        let value = Number(data.value);
+        value++;
+        data.value = value + '';
+      }
+    };
+    friends = friends ?? [];
+    this.data = <SimpleDataModel[]>friends
+      .map((f: FriendsEntity) => this.timeSince.transform(f.dob))
+      .reduce((acc: SimpleDataModel[], age: string): SimpleDataModel[] => {
+        const currentAge = Number(age);
+        if (!isNaN(currentAge)) {
+          if (currentAge >= 18 && currentAge < 29) {
+            updateData(acc, '18-29');
+          } else if (currentAge >= 30 && currentAge < 39) {
+            updateData(acc, '30-39');
+          } else if (currentAge >= 40 && currentAge < 49) {
+            updateData(acc, '40-49');
+          } else if (currentAge >= 50 && currentAge < 59) {
+            updateData(acc, '50-59');
+          } else if (currentAge >= 60) {
+            updateData(acc, '60+');
+          }
+        }
+        return acc;
+      }, templateData)
+      .filter((item: SimpleDataModel) => {
+        return Number(item.value) !== 0;
+      });
+
+    console.log(this.data);
+  }
+
+  public data: SimpleDataModel[] = [];
+  private timeSince: TimeSincePipe;
+
+  // public data: SimpleDataModel[] = [
+  //   { name: 'a', value: '9', color: '#665faac' },
+  //   { name: 'b', value: '20', color: '#dd8050c4' },
+  //   { name: 'c', value: '30', color: '#63adfeb3' },
+  //   { name: 'd', value: '8', color: '#24b044d9' },
+  //   { name: 'e', value: '12', color: '#ff516ed9' },
+  //   { name: 'f', value: '3', color: '#ffcf59ed' },
+  //   { name: 'g', value: '7', color: '#17a2b8' },
+  //   { name: 'h', value: '14', color: '#976a6af2' },
+  // ];
+
+  public dataTemplate: SimpleDataModel[] = [
+    { name: '18-29', value: '0' },
+    { name: '30-39', value: '0' },
+    { name: '40-49', value: '0' },
+    { name: '50-59', value: '0' },
+    { name: '60+', value: '0' },
   ];
 
-  private margin = { top: 0, right: 30, bottom: 30, left: 30 };
+  private margin = { top: 0, right: 40, bottom: 30, left: 40 };
   private width = 450;
   private height = 450;
   private svg: any;
   private colors: any;
   private radius = Math.min(this.width, this.height) / 2 - this.margin.left;
-  constructor() {}
+  constructor() {
+    this.timeSince = new TimeSincePipe();
+  }
 
   ngAfterViewInit(): void {
-    console.log('draw donut');
     this.createSvg();
     this.createColors(this.data);
     this.drawChart();
   }
 
   private createSvg(): void {
-    console.log(document.getElementById('donut'));
     this.svg = d3
       .select('#donut')
       .append('svg')
@@ -52,7 +106,7 @@ export class AgeDonutComponent implements AfterViewInit {
       );
   }
 
-  private createColors(data: any[]): void {
+  private createColors(data: SimpleDataModel[]): void {
     let index = 0;
     const defaultColors = [
       '#6773f1',
@@ -63,14 +117,16 @@ export class AgeDonutComponent implements AfterViewInit {
       '#1b1b1b',
       '#212121',
     ];
-    const colorsRange: any[] = [];
-    this.data.forEach((element) => {
-      if (element.color) colorsRange.push(element.color);
-      else {
+    const colorsRange: string[] = [];
+    data.forEach((element) => {
+      if (element.color) {
+        colorsRange.push(element.color);
+      } else {
         colorsRange.push(defaultColors[index]);
         index++;
       }
     });
+
     this.colors = d3
       .scaleOrdinal()
       .domain(data.map((d) => d.value.toString()))

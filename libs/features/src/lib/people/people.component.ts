@@ -40,7 +40,6 @@ export class PeopleComponent implements OnInit {
 
   selectPerson(id: string | number | null | undefined) {
     this.selectedPersonId = id;
-    console.log('selected:::', id);
   }
 
   updateFriend(friend: FriendsEntity) {
