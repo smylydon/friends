@@ -20,6 +20,8 @@ import { HelperService } from './services/helper.service';
 import { PeopleTableComponent } from './people-table/people-table.component';
 import { BusyComponent } from './busy/busy.component';
 import { AgeDonutComponent } from './age-donut/age-donut.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { CustomMaterialFormsMatcher } from './services/custom-material-forms-matcher';
 
 @NgModule({
   imports: [
@@ -46,6 +48,13 @@ import { AgeDonutComponent } from './age-donut/age-donut.component';
     BusyComponent,
     AgeDonutComponent,
   ],
-  providers: [FriendsService, HelperService],
+  providers: [
+    FriendsService,
+    HelperService,
+    {
+      provide: ErrorStateMatcher,
+      useClass: CustomMaterialFormsMatcher,
+    },
+  ],
 })
 export class FeaturesModule {}
