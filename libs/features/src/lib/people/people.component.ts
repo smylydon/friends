@@ -11,6 +11,7 @@ import { addFriendList } from '../+state/friends.actions';
 import { FriendsEntity } from '../+state/friends.models';
 import { FriendsState } from '../+state/friends.reducer';
 import { getAllFriends } from '../+state/friends.selectors';
+import { HelperService } from '../services/helper.service';
 
 @Component({
   selector: 'friends-people',
@@ -26,7 +27,10 @@ export class PeopleComponent implements OnInit {
     FriendsEntity[]
   >([]);
 
-  constructor(private store: Store<FriendsState>) {}
+  constructor(
+    private store: Store<FriendsState>,
+    public helperService: HelperService
+  ) {}
 
   ngOnInit(): void {
     this.peopleData$ = this.store.select(getAllFriends);

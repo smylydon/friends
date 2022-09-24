@@ -1,46 +1,51 @@
-<form class="form" [formGroup]="personForm" (ngSubmit)="submit()">
-  <mat-form-field class="w-100" appearance="fill">
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name" />
-    <mat-error *ngIf="personForm.controls['name'].hasError('minlength')"
-      >Name of at least 3 characters is required</mat-error
-    >
-    <mat-error *ngIf="personForm.controls['name'].hasError('maxlength')"
-      >You have more than 100 characters</mat-error
-    >
-  </mat-form-field>
-  <mat-form-field class="w-100" appearance="fill">
-    <mat-label>Weight</mat-label>
-    <input matInput name="weight" formControlName="weight" />
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Date of Birth</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      [min]="minDate"
-      [max]="maxDate"
-      name="dob"
-      formControlName="dob"
-    />
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle
-      matSuffix
-      [for]="picker"
-      [disabled]="false"
-    ></mat-datepicker-toggle>
-    <mat-datepicker
-      #picker
-      [startAt]="startDate"
-      [disabled]="false"
-    ></mat-datepicker>
-  </mat-form-field>
+<friends-busy *ngIf="helperService.isloading$ | async; else notloading">
+</friends-busy>
 
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="personForm.invalid || (helperService.isloading$ | async)"
-  >
-    Submit
-  </button>
-</form>
+<ng-template #notloading>
+  <form class="form" [formGroup]="personForm" (ngSubmit)="submit()">
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="personForm.controls['name'].hasError('minlength')"
+        >Name of at least 3 characters is required</mat-error
+      >
+      <mat-error *ngIf="personForm.controls['name'].hasError('maxlength')"
+        >You have more than 100 characters</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Weight</mat-label>
+      <input matInput name="weight" formControlName="weight" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Date of Birth</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [min]="minDate"
+        [max]="maxDate"
+        name="dob"
+        formControlName="dob"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker"
+        [disabled]="false"
+      ></mat-datepicker-toggle>
+      <mat-datepicker
+        #picker
+        [startAt]="startDate"
+        [disabled]="false"
+      ></mat-datepicker>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="personForm.invalid || (helperService.isloading$ | async)"
+    >
+      Submit
+    </button>
+  </form>
+</ng-template>

@@ -65,6 +65,7 @@ export class PersonComponent implements OnInit {
   }
 
   submit() {
+    //https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
     const friend: FriendsEntity = Object.assign({}, this.personForm.value, {
       dob: new Date(this.personForm.value.dob).toISOString(),
     }) as FriendsEntity;
