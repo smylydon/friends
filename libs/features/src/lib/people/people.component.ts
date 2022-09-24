@@ -4,9 +4,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { addFriendList } from '../+state/friends.actions';
 import { FriendsEntity } from '../+state/friends.models';
 import { FriendsState } from '../+state/friends.reducer';
@@ -21,6 +22,7 @@ import { HelperService } from '../services/helper.service';
 })
 export class PeopleComponent implements OnInit {
   @Input() isloading = false;
+  public tabIndex = 0;
 
   public selectedPersonId: string | number | null | undefined;
   public peopleData$: Observable<FriendsEntity[]> = new BehaviorSubject<
@@ -43,5 +45,9 @@ export class PeopleComponent implements OnInit {
 
   updateFriend(friend: FriendsEntity) {
     this.store.dispatch(addFriendList({ friend }));
+  }
+
+  selectedTabValue(event: MatTabChangeEvent) {
+    this.tabIndex = event.index;
   }
 }

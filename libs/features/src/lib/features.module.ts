@@ -19,6 +19,7 @@ import { FriendsService } from './services/friends.service';
 import { HelperService } from './services/helper.service';
 import { PeopleTableComponent } from './people-table/people-table.component';
 import { BusyComponent } from './busy/busy.component';
+import { AgeDonutComponent } from './age-donut/age-donut.component';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { BusyComponent } from './busy/busy.component';
     TimeSincePipe,
     PeopleTableComponent,
     BusyComponent,
+    AgeDonutComponent,
   ],
   providers: [FriendsService, HelperService],
 })

@@ -16,11 +16,19 @@
     </div>
 
     <div class="col-md-9">
-      <friends-people-table
-        [data]="peopleData$ | async"
-        [selectedPersonId]="selectedPersonId"
-        (friendsList)="updateFriend($event)"
-      ></friends-people-table>
+      <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
+        <mat-tab label="Find Friend">
+          <friends-people-table
+            [data]="peopleData$ | async"
+            [selectedPersonId]="selectedPersonId"
+            (friendsList)="updateFriend($event)"
+          ></friends-people-table>
+        </mat-tab>
+        <mat-tab label="Friends by Age">
+          <friends-age-donut *ngIf="tabIndex === 1"></friends-age-donut>
+        </mat-tab>
+        <mat-tab label="Friends by Weight"> Content 3 </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </ng-template>
