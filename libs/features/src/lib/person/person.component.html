@@ -2,6 +2,11 @@
 </friends-busy>
 
 <ng-template #notloading>
+  <h1>Add Person</h1>
+  <p>
+    Add people to system with this form.<br />Using 'Connect Friends' route to
+    add friends.
+  </p>
   <form class="form" [formGroup]="personForm" (ngSubmit)="submit()">
     <mat-form-field class="w-100" appearance="fill">
       <mat-label>Name</mat-label>

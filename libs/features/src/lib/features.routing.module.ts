@@ -17,8 +17,9 @@ const routes: Routes = [
       },
       { path: 'connect', redirectTo: 'connect-friends' },
       { path: 'connect-friends', component: PeopleComponent },
+      /*
       { path: 'stats', redirectTo: 'statistics' },
-      { path: 'statistics', component: StatisticsComponent },
+      { path: 'statistics', component: StatisticsComponent },*/
     ],
   },
 ];

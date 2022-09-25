@@ -30,7 +30,12 @@
             [data]="helperService.friendsData$ | async"
           ></friends-age-donut>
         </mat-tab>
-        <mat-tab label="Friends by Weight"> Content 3 </mat-tab>
+        <mat-tab label="Friends by Weight">
+          <friends-weight-histogram
+            *ngIf="tabIndex === 2"
+            [data]="helperService.friendsData$ | async"
+          ></friends-weight-histogram>
+        </mat-tab>
       </mat-tab-group>
     </div>
   </div>
