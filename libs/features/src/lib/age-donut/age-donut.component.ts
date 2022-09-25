@@ -1,85 +1,31 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  AfterViewInit,
+} from '@angular/core';
 import * as d3 from 'd3';
 import { FriendsEntity } from '../+state/friends.models';
 import { SimpleDataModel } from '../models/simple-data.model';
-import { TimeSincePipe } from '../pipes/time-since.pipe';
+import { HelperService } from '../services/helper.service';
 
 //https://stackblitz.com/edit/angular-d3-js-donut-chart?file=src%2Fapp%2Fd3-donut%2Fd3-donut.component.ts
 @Component({
   selector: 'friends-age-donut',
   templateUrl: './age-donut.component.html',
   styleUrls: ['./age-donut.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgeDonutComponent implements AfterViewInit {
   @Input('data') set setData(friends: FriendsEntity[] | null | undefined) {
-    const templateData: SimpleDataModel[] = this.dataTemplate.map(
-      (data: SimpleDataModel) => {
-        return Object.assign({}, data);
-      }
-    );
-    const updateData = (collection: SimpleDataModel[], target: string) => {
-      const data: SimpleDataModel | undefined = collection.find(
-        (item: SimpleDataModel) => {
-          return item.name === target;
-        }
-      );
-      if (data) {
-        let value = Number(data.value);
-        value++;
-        data.value = value + '';
-      }
-    };
-    friends = friends ?? [];
-    this.data = <SimpleDataModel[]>friends
-      .map((f: FriendsEntity) => this.timeSince.transform(f.dob))
-      .reduce((acc: SimpleDataModel[], age: string): SimpleDataModel[] => {
-        console.log('reducing');
-        const currentAge = Number(age);
-        if (!isNaN(currentAge)) {
-          if (currentAge >= 18 && currentAge < 29) {
-            updateData(acc, '18-29');
-          } else if (currentAge >= 30 && currentAge < 39) {
-            updateData(acc, '30-39');
-          } else if (currentAge >= 40 && currentAge < 49) {
-            updateData(acc, '40-49');
-          } else if (currentAge >= 50 && currentAge < 59) {
-            updateData(acc, '50-59');
-          } else if (currentAge >= 60) {
-            updateData(acc, '60+');
-          }
-        }
-        return acc;
-      }, templateData)
-      .filter((item: SimpleDataModel) => {
-        return Number(item.value) !== 0;
-      });
-
+    this.data = this.helperService.getDonutData(friends);
     if (this.afterInitDone) {
       this.updateChart(this.data);
     }
   }
 
   public data: SimpleDataModel[] = [];
-  private timeSince: TimeSincePipe;
-
-  // public data: SimpleDataModel[] = [
-  //   { name: 'a', value: '9', color: '#665faac' },
-  //   { name: 'b', value: '20', color: '#dd8050c4' },
-  //   { name: 'c', value: '30', color: '#63adfeb3' },
-  //   { name: 'd', value: '8', color: '#24b044d9' },
-  //   { name: 'e', value: '12', color: '#ff516ed9' },
-  //   { name: 'f', value: '3', color: '#ffcf59ed' },
-  //   { name: 'g', value: '7', color: '#17a2b8' },
-  //   { name: 'h', value: '14', color: '#976a6af2' },
-  // ];
-
-  public dataTemplate: SimpleDataModel[] = [
-    { name: '18-29', value: '0' },
-    { name: '30-39', value: '0' },
-    { name: '40-49', value: '0' },
-    { name: '50-59', value: '0' },
-    { name: '60+', value: '0' },
-  ];
 
   private margin = { top: 0, right: 40, bottom: 30, left: 40 };
   private width = 450;
@@ -88,9 +34,11 @@ export class AgeDonutComponent implements AfterViewInit {
   private colors: any;
   private radius = Math.min(this.width, this.height) / 2 - this.margin.left;
   private afterInitDone = false;
-  constructor() {
-    this.timeSince = new TimeSincePipe();
-  }
+
+  constructor(
+    private elementRef: ElementRef,
+    private helperService: HelperService
+  ) {}
 
   ngAfterViewInit(): void {
     this.updateChart(this.data);
@@ -104,7 +52,7 @@ export class AgeDonutComponent implements AfterViewInit {
   }
 
   private createSvg(): void {
-    d3.select('svg').remove();
+    d3.select(this.elementRef.nativeElement).select('svg').remove();
     this.svg = d3
       .select('#donut')
       .append('svg')
@@ -136,11 +84,12 @@ export class AgeDonutComponent implements AfterViewInit {
         index++;
       }
     });
+    this.colors = d3.scaleOrdinal(d3.schemeCategory10);
 
-    this.colors = d3
-      .scaleOrdinal()
-      .domain(data.map((d) => d.value.toString()))
-      .range(colorsRange);
+    // this.colors = d3
+    //   .scaleOrdinal()
+    //   .domain(data.map((d) => d.value.toString()))
+    //   .range(colorsRange);
   }
 
   private drawChart(): void {

@@ -27,7 +27,7 @@
         <mat-tab label="Friends by Age">
           <friends-age-donut
             *ngIf="tabIndex === 1"
-            [data]="friendsData$ | async"
+            [data]="helperService.friendsData$ | async"
           ></friends-age-donut>
         </mat-tab>
         <mat-tab label="Friends by Weight"> Content 3 </mat-tab>

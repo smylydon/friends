@@ -24,7 +24,7 @@ export class FriendsService {
     if (!Array.isArray(items)) {
       items = [];
     }
-    console.log('loaded friends...', items);
+
     return of(items as FriendsEntity[]).pipe(delay(DELAY_TIME));
   }
 

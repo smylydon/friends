@@ -100,7 +100,6 @@ export class PeopleTableComponent implements AfterViewInit {
     this.dataSource.data = data;
     this.currentPerson = person;
     this.selectedFriends = new Set(person?.friends);
-    console.log('selectedFriends::', this.selectedFriends);
   }
 
   private getCurrentPersonAndFilterData(
