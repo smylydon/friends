@@ -33,6 +33,7 @@ export class AgeDonutComponent implements AfterViewInit {
     this.data = <SimpleDataModel[]>friends
       .map((f: FriendsEntity) => this.timeSince.transform(f.dob))
       .reduce((acc: SimpleDataModel[], age: string): SimpleDataModel[] => {
+        console.log('reducing');
         const currentAge = Number(age);
         if (!isNaN(currentAge)) {
           if (currentAge >= 18 && currentAge < 29) {
@@ -53,7 +54,9 @@ export class AgeDonutComponent implements AfterViewInit {
         return Number(item.value) !== 0;
       });
 
-    console.log(this.data);
+    if (this.afterInitDone) {
+      this.updateChart(this.data);
+    }
   }
 
   public data: SimpleDataModel[] = [];
@@ -84,17 +87,24 @@ export class AgeDonutComponent implements AfterViewInit {
   private svg: any;
   private colors: any;
   private radius = Math.min(this.width, this.height) / 2 - this.margin.left;
+  private afterInitDone = false;
   constructor() {
     this.timeSince = new TimeSincePipe();
   }
 
   ngAfterViewInit(): void {
+    this.updateChart(this.data);
+    this.afterInitDone = true;
+  }
+
+  private updateChart(data: SimpleDataModel[]) {
     this.createSvg();
-    this.createColors(this.data);
+    this.createColors(data);
     this.drawChart();
   }
 
   private createSvg(): void {
+    d3.select('svg').remove();
     this.svg = d3
       .select('#donut')
       .append('svg')
