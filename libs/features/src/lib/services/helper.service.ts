@@ -4,10 +4,11 @@ import { FriendsEntity } from '../+state/friends.models';
 import { getAllFriends, getFriendsLoaded } from '../+state/friends.selectors';
 
 import { map, share, switchMap } from 'rxjs/operators';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { SimpleDataModel } from '../models/simple-data.model';
 import { WeightModel } from '../models/weight.model';
 import { TimeSincePipe } from '../pipes/time-since.pipe';
+import { flatGroup } from 'd3';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +18,6 @@ export class HelperService {
   public friendsData$: Observable<FriendsEntity[] | undefined | null> =
     new BehaviorSubject<FriendsEntity[] | null | undefined>([]);
 
-  // public data: SimpleDataModel[] = [
-  //   { name: 'a', value: '9', color: '#665faac' },
-  //   { name: 'b', value: '20', color: '#dd8050c4' },
-  //   { name: 'c', value: '30', color: '#63adfeb3' },
-  //   { name: 'd', value: '8', color: '#24b044d9' },
-  //   { name: 'e', value: '12', color: '#ff516ed9' },
-  //   { name: 'f', value: '3', color: '#ffcf59ed' },
-  //   { name: 'g', value: '7', color: '#17a2b8' },
-  //   { name: 'h', value: '14', color: '#976a6af2' },
-  // ];
-
   private dataTemplate: SimpleDataModel[] = [
     { name: '18-29', value: '0' },
     { name: '30-39', value: '0' },
@@ -36,7 +26,8 @@ export class HelperService {
     { name: '60+', value: '0' },
   ];
 
-  private selectedPersonId$: Subject<string> = new Subject<string>();
+  private selectedPersonId$: BehaviorSubject<string> =
+    new BehaviorSubject<string>('');
   private timeSince: TimeSincePipe;
 
   constructor(private store: Store<FriendsEntity[]>) {
@@ -80,37 +71,34 @@ export class HelperService {
   }
 
   getBarData(friends: FriendsEntity[] | null | undefined): WeightModel[] {
-    const findData = (
-      collection: WeightModel[],
-      target: number
-    ): WeightModel => {
-      const data: WeightModel | undefined = collection.find(
-        (item: WeightModel) => {
-          return item.weight === target;
-        }
-      );
-      if (data) {
-        return data;
-      } else {
-        const item: WeightModel = { weight: target, frequency: 0 };
-        collection.push(item);
-        return item;
-      }
-    };
     friends = friends ?? [];
-    return <WeightModel[]>friends
+    const first: Map<string, WeightModel>[] = friends
       .map((f: FriendsEntity) => Number(f.weight))
       .filter((weight: number) => !isNaN(weight) && Number.isFinite(weight))
-      .reduce((acc: WeightModel[], weight: number): WeightModel[] => {
-        const item: WeightModel = findData(acc, weight);
-        item.frequency += 1;
-
-        return acc;
-      }, [])
+      .reduce(
+        (
+          acc: Map<string, WeightModel>[],
+          weight: number
+        ): Map<string, WeightModel>[] => {
+          const items: Map<string, WeightModel> = acc[0];
+          const item: WeightModel = items.get(weight + '') ?? {
+            weight,
+            frequency: 0,
+          };
+          item.frequency += 1;
+          items.set(weight + '', item);
+          return <Map<string, WeightModel>[]>acc;
+        },
+        <Map<string, WeightModel>[]>[new Map()]
+      );
+    const second: Map<string, WeightModel> = <Map<string, WeightModel>>first[0];
+    const third = Array.from(second.values())
       .filter((item: WeightModel) => {
         return item.frequency !== 0;
       })
       .sort((a: WeightModel, b: WeightModel) => a.weight - b.weight);
+
+    return third;
   }
 
   getDonutData(friends: FriendsEntity[] | null | undefined): SimpleDataModel[] {

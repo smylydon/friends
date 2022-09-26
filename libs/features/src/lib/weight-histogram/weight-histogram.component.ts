@@ -31,6 +31,7 @@ export class WeightHistogramComponent implements AfterViewInit {
   private width = 450;
   private height = 450;
   private svg: any;
+  private colors: any;
 
   private afterInitDone = false;
 
@@ -57,6 +58,8 @@ export class WeightHistogramComponent implements AfterViewInit {
       .append('svg')
       .attr('width', this.width)
       .attr('height', this.height);
+
+    this.colors = d3.scaleOrdinal(d3.schemeCategory10);
   }
 
   private drawBars(data: WeightModel[]) {
@@ -96,7 +99,7 @@ export class WeightHistogramComponent implements AfterViewInit {
       .attr('text-anchor', 'end')
       .text('Frequency');
 
-    g.selectAll('.bar')
+    g.selectAll('bars')
       .data(data)
       .enter()
       .append('rect')
@@ -104,6 +107,7 @@ export class WeightHistogramComponent implements AfterViewInit {
       .attr('x', (d: any) => x(d.weight))
       .attr('y', (d: any) => y(d.frequency))
       .attr('width', x.bandwidth())
+      .attr('fill', '#498bfc')
       .attr('height', (d: any) => contentHeight - y(d.frequency));
   }
 }
